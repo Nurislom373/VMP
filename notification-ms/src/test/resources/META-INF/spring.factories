@@ -1,0 +1,3 @@
+org.springframework.test.context.ContextCustomizerFactory = org.khasanof.config.\
+    SqlTestContainersSpringContextCustomizerFactory,org.khasanof.config.\
+    KafkaTestContainersSpringContextCustomizerFactory

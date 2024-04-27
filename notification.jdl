@@ -1,0 +1,17 @@
+enum NotificationStatus {
+  NEW, SEND, READ, DELETED, BLOCKED
+}
+
+enum NotificationType {
+  SYSTEM, EMAIL, TELEGRAM, SMS
+}
+
+entity Notification {
+  sender String required
+  recipient String required
+  message TextBlob required
+  status NotificationStatus required
+  type NotificationType required
+  link TextBlob
+  params TextBlob
+}
