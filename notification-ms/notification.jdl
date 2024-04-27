@@ -15,3 +15,9 @@ entity Notification {
   link TextBlob
   params TextBlob
 }
+
+dto * with mapstruct
+service * with serviceImpl
+paginate * with pagination
+microservice * with statistics
+filter *

@@ -1,0 +1,56 @@
+{
+  "annotations": {
+    "changelogDate": "20240427192147"
+  },
+  "applications": "*",
+  "clientRootFolder": "notificationms",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "sender",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "recipient",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "message",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "NotificationStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "NEW,SEND,READ,DELETED,BLOCKED"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "NotificationType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "SYSTEM,EMAIL,TELEGRAM,SMS"
+    },
+    {
+      "fieldName": "link",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "params",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "notificationms",
+  "name": "Notification",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}
