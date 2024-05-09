@@ -1,0 +1,11 @@
+id;name;description;visibility;level;stock;unlimited_stock;has_options;status
+1;compile aw;../fake-data/blob/hipster.txt;SCHEDULED;RECOMMENDED;4928;true;true;BLOCKED
+2;ack yet;../fake-data/blob/hipster.txt;PUBLIC;RECOMMENDED;4242;true;false;BLOCKED
+3;gadzooks engulf yet;../fake-data/blob/hipster.txt;SCHEDULED;POPULAR;19022;true;true;NEW
+4;gullible pro;../fake-data/blob/hipster.txt;PUBLIC;NEW;12609;true;false;DELETED
+5;whether woot;../fake-data/blob/hipster.txt;SCHEDULED;RECOMMENDED;17999;true;true;NEW
+6;highly before;../fake-data/blob/hipster.txt;SCHEDULED;POPULAR;16390;false;true;DRAFT
+7;festoon;../fake-data/blob/hipster.txt;SCHEDULED;RECOMMENDED;22423;true;true;ACTIVE
+8;yieldingly assault stage;../fake-data/blob/hipster.txt;SCHEDULED;POPULAR;29019;false;true;NEW
+9;blissfully;../fake-data/blob/hipster.txt;SCHEDULED;NEW;25090;false;false;BLOCKED
+10;the instantly continually;../fake-data/blob/hipster.txt;HIDDEN;NEW;29569;true;true;DELETED

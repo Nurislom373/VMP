@@ -1,0 +1,61 @@
+{
+  "annotations": {
+    "changelogDate": "20240509122619"
+  },
+  "applications": "*",
+  "clientRootFolder": "productms",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "visibility",
+      "fieldType": "Visibility",
+      "fieldValues": "PUBLIC,HIDDEN,SCHEDULED"
+    },
+    {
+      "fieldName": "level",
+      "fieldType": "Level",
+      "fieldValues": "NEW,RECOMMENDED,POPULAR"
+    },
+    {
+      "fieldName": "stock",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "unlimitedStock",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "GiftStatus",
+      "fieldValues": "NEW,ACTIVE,DRAFT,BLOCKED,DELETED"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "productms",
+  "name": "Gift",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "gift",
+      "relationshipName": "product",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

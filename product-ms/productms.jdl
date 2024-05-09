@@ -1,0 +1,125 @@
+enum Level {
+    NEW,
+    RECOMMENDED,
+    POPULAR
+}
+
+enum ProductStatus {
+    NEW,
+    ACTIVE,
+    DRAFT,
+    BLOCKED,
+    DELETED
+}
+
+enum GiftStatus {
+    NEW,
+    ACTIVE,
+    DRAFT,
+    BLOCKED,
+    DELETED
+}
+
+enum Visibility {
+    PUBLIC,
+    HIDDEN,
+    SCHEDULED
+}
+
+enum TagStatus {
+    NEW, ACTIVE, DELETED
+}
+
+enum OptionStatus {
+    ACTIVE,
+    DELETED
+}
+
+enum OptionVariantStatus {
+    ACTIVE,
+    DELETED
+}
+
+enum ImageStatus {
+    ACTIVE,
+    DELETED
+}
+
+enum CategoryStatus {
+    ACTIVE,
+    DELETED,
+    BLOCKED
+}
+
+entity Category {
+    name String required
+    status CategoryStatus
+}
+
+entity Tag {
+    name String required
+    status TagStatus
+}
+
+entity Product {
+    name String required
+    description TextBlob
+    visibility Visibility
+    level Level
+    stock Long required // quantity
+    unlimitedStock Boolean required
+    hasOptions Boolean required
+    status ProductStatus
+}
+
+entity Gift {
+    name String required
+    description TextBlob
+    visibility Visibility
+    level Level
+    stock Long required // quantity
+    unlimitedStock Boolean required
+    status GiftStatus
+}
+
+entity Image {
+    imageKey String required
+    status ImageStatus
+}
+
+entity Option {
+    name String required
+    status OptionStatus
+}
+
+entity OptionVariant {
+    name String required
+    status OptionVariantStatus
+}
+
+entity Price {
+    price BigDecimal required
+    isBase Boolean required
+    sku String // stock keeping unit
+}
+
+relationship OneToMany {
+    Category to Product{category}
+    Product to Option{product}
+    Product to Image{product}
+    Option{variants} to OptionVariant{option}
+}
+
+relationship ManyToOne {
+    OptionVariant to Price{variants}
+}
+
+relationship ManyToMany {
+    Product to Tag
+    Product to Gift
+}
+
+dto * with mapstruct
+service * with serviceImpl
+paginate * with pagination
+filter *

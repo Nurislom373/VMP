@@ -1,0 +1,11 @@
+id;name;description;visibility;level;stock;unlimited_stock;status
+1;which indeed;../fake-data/blob/hipster.txt;SCHEDULED;POPULAR;11251;true;BLOCKED
+2;incarnation serve;../fake-data/blob/hipster.txt;HIDDEN;NEW;28278;false;DELETED
+3;except;../fake-data/blob/hipster.txt;SCHEDULED;RECOMMENDED;19999;true;ACTIVE
+4;though;../fake-data/blob/hipster.txt;SCHEDULED;RECOMMENDED;22664;false;NEW
+5;whereas up;../fake-data/blob/hipster.txt;SCHEDULED;RECOMMENDED;21240;true;BLOCKED
+6;teaching;../fake-data/blob/hipster.txt;PUBLIC;NEW;10127;false;BLOCKED
+7;hilarious;../fake-data/blob/hipster.txt;SCHEDULED;POPULAR;5740;true;ACTIVE
+8;pressure;../fake-data/blob/hipster.txt;HIDDEN;POPULAR;16386;true;DELETED
+9;aha catalyse a;../fake-data/blob/hipster.txt;SCHEDULED;POPULAR;22031;true;DELETED
+10;indeed gee wastebasket;../fake-data/blob/hipster.txt;HIDDEN;RECOMMENDED;27261;true;NEW

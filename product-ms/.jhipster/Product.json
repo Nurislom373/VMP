@@ -1,0 +1,93 @@
+{
+  "annotations": {
+    "changelogDate": "20240509122618"
+  },
+  "applications": "*",
+  "clientRootFolder": "productms",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "visibility",
+      "fieldType": "Visibility",
+      "fieldValues": "PUBLIC,HIDDEN,SCHEDULED"
+    },
+    {
+      "fieldName": "level",
+      "fieldType": "Level",
+      "fieldValues": "NEW,RECOMMENDED,POPULAR"
+    },
+    {
+      "fieldName": "stock",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "unlimitedStock",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "hasOptions",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "ProductStatus",
+      "fieldValues": "NEW,ACTIVE,DRAFT,BLOCKED,DELETED"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "productms",
+  "name": "Product",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "option",
+      "otherEntityRelationshipName": "product",
+      "relationshipName": "option",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "product",
+      "relationshipName": "image",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "tag",
+      "otherEntityRelationshipName": "product",
+      "relationshipName": "tag",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "gift",
+      "otherEntityRelationshipName": "product",
+      "relationshipName": "gift",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "category",
+      "relationshipName": "category",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

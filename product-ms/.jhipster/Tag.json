@@ -1,0 +1,36 @@
+{
+  "annotations": {
+    "changelogDate": "20240509122621"
+  },
+  "applications": "*",
+  "clientRootFolder": "productms",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "TagStatus",
+      "fieldValues": "NEW,ACTIVE,DELETED"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "productms",
+  "name": "Tag",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "tag",
+      "relationshipName": "product",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

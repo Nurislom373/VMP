@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity OptionVariant.
+    -->
+    <changeSet id="20240509122624-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="price_id"
+                                 baseTableName="option_variant"
+                                 constraintName="fk_option_variant__price_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="price"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="option_id"
+                                 baseTableName="option_variant"
+                                 constraintName="fk_option_variant__option_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="option"
+                                 />
+    </changeSet>
+</databaseChangeLog>

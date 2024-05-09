@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20240509122620"
+  },
+  "applications": "*",
+  "clientRootFolder": "productms",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "price",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "isBase",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "sku",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "productms",
+  "name": "Price",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "optionVariant",
+      "relationshipName": "variants",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

@@ -1,0 +1,42 @@
+{
+  "annotations": {
+    "changelogDate": "20240509122623"
+  },
+  "applications": "*",
+  "clientRootFolder": "productms",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "OptionStatus",
+      "fieldValues": "ACTIVE,DELETED"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "productms",
+  "name": "Option",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "optionVariant",
+      "otherEntityRelationshipName": "option",
+      "relationshipName": "variants",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "product",
+      "relationshipName": "product",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}
