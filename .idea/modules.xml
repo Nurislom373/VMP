@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/VMP.iml" filepath="$PROJECT_DIR$/VMP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/admin-panel/admin-panel.iml" filepath="$PROJECT_DIR$/admin-panel/admin-panel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/admin-panel/vmp-dashboard.iml" filepath="$PROJECT_DIR$/admin-panel/vmp-dashboard.iml" />
     </modules>
   </component>
 </project>

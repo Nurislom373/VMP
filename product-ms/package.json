@@ -48,7 +48,8 @@
     "packaging": "jar"
   },
   "devDependencies": {
-    "generator-jhipster": "8.2.1"
+    "generator-jhipster": "8.2.1",
+    "tailwindcss": "^3.4.3"
   },
   "engines": {
     "node": ">=20.11.1"
