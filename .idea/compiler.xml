@@ -6,9 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="notificationms" />
         <module name="vmp-core" />
       </profile>
-      <profile name="Annotation profile for Notificationms" enabled="true">
+      <profile name="Annotation profile for Productms" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -19,13 +20,14 @@
           <entry name="$MAVEN_REPOSITORY$/org/hibernate/orm/hibernate-jpamodelgen/unknown/hibernate-jpamodelgen-unknown.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/glassfish/jaxb/jaxb-runtime/unknown/jaxb-runtime-unknown.jar" />
         </processorPath>
-        <module name="notificationms" />
+        <module name="productms" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="notificationms" options="-parameters" />
+      <module name="notificationms" options="" />
+      <module name="productms" options="-parameters" />
     </option>
   </component>
 </project>
