@@ -17,22 +17,6 @@
     <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121820_added_entity_Category.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121821_added_entity_Tags.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121822_added_entity_Product.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121823_added_entity_Gift.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121824_added_entity_Images.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121825_added_entity_Options.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121826_added_entity_OptionsVariants.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121827_added_entity_Price.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122427_added_entity_Category.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122428_added_entity_Product.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122429_added_entity_Gift.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122430_added_entity_Price.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122431_added_entity_Tag.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122432_added_entity_Image.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122433_added_entity_Option.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122434_added_entity_OptionVariant.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240509122617_added_entity_Category.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240509122618_added_entity_Product.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240509122619_added_entity_Gift.xml" relativeToChangelogFile="false"/>
@@ -42,15 +26,6 @@
     <include file="config/liquibase/changelog/20240509122623_added_entity_Option.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240509122624_added_entity_OptionVariant.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <include file="config/liquibase/changelog/20240509121821_added_entity_constraints_Tags.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121822_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121824_added_entity_constraints_Images.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121825_added_entity_constraints_Options.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509121826_added_entity_constraints_OptionsVariants.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122428_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122432_added_entity_constraints_Image.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122433_added_entity_constraints_Option.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20240509122434_added_entity_constraints_OptionVariant.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240509122618_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240509122622_added_entity_constraints_Image.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240509122623_added_entity_constraints_Option.xml" relativeToChangelogFile="false"/>

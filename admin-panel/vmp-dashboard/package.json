@@ -22,7 +22,7 @@
     "@ngx-translate/http-loader": "^8.0.0",
     "flowbite": "^2.3.0",
     "keycloak-angular": "^15.2.1",
-    "keycloak-js": "^24.0.4",
+    "keycloak-js": "^23.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
