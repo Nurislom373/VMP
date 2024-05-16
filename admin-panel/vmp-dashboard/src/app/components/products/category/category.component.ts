@@ -10,11 +10,14 @@ import {SidebarComponent} from "../../../layout/sidebar/sidebar.component";
 import {CategoryForm} from "../../../models/form/category.form";
 import {FormsModule, NgForm} from "@angular/forms";
 import {Pair} from "../../../models/pair";
+import {UpdateCategoryComponent} from "./update/update-category.component";
+import {MatDialog} from "@angular/material/dialog";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, SidebarComponent, FormsModule],
+  imports: [CommonModule, NavbarComponent, SidebarComponent, FormsModule, UpdateCategoryComponent, MatButton],
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })
@@ -26,17 +29,17 @@ export class CategoryComponent implements OnInit {
   CategoryForm!: NgForm;
 
   categories: CategoryBadge[] = [];
-  addCategoryForm: CategoryForm = new CategoryForm();
+  categoryForm: CategoryForm = new CategoryForm();
   perPageElementSize: number = 10
   categoriesCount: number = 0
   currentPage: number = 0
   pagesRange: Array<Pair> = []
 
-
   constructor(
     private categoriesService: CategoriesService,
     private httpClient: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {
   }
 
@@ -45,10 +48,7 @@ export class CategoryComponent implements OnInit {
   }
 
   addCategory() {
-    console.log(this.addCategoryForm.name)
-    console.log(this.addCategoryForm.status)
-
-    this.httpClient.post(this._url, this.addCategoryForm)
+    this.httpClient.post(this._url, this.categoryForm)
       .subscribe(data => {
         this.loadCategories();
       })
@@ -68,6 +68,16 @@ export class CategoryComponent implements OnInit {
       this.currentPage--;
       this.loadCategories()
     }
+  }
+
+  openModal(enterAnimationDuration: string, exitAnimationDuration: string) {
+    this.dialog.open(UpdateCategoryComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      height: '550px',
+      width: '850px',
+      position: { right: '10%', top: '5%' }
+    })
   }
 
   ngOnInit(): void {

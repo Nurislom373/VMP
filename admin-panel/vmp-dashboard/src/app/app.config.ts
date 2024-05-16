@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {KeycloakBearerInterceptor, KeycloakService} from "keycloak-angular";
+import {provideAnimations} from "@angular/platform-browser/animations";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -38,6 +39,7 @@ const KeycloakInitializerProvider: Provider = {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimations(),
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()), // Provides HttpClient with interceptors
     KeycloakService,

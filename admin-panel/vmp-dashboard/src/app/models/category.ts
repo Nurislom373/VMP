@@ -1,6 +1,6 @@
 export interface Category {
   id?: number
-  name: String
+  name: string
   status?: CategoryStatus
 }
 
