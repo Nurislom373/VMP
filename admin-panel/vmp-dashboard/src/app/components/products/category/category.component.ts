@@ -13,6 +13,7 @@ import {Pair} from "../../../models/pair";
 import {UpdateCategoryComponent} from "./update/update-category.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
+import {CreateCategoryComponent} from "./create/create-category.component";
 
 @Component({
   selector: 'app-category',
@@ -70,13 +71,12 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-  openModal(enterAnimationDuration: string, exitAnimationDuration: string) {
-    this.dialog.open(UpdateCategoryComponent, {
-      enterAnimationDuration,
-      exitAnimationDuration,
-      height: '550px',
-      width: '850px',
-      position: { right: '10%', top: '5%' }
+  openModal() {
+    this.dialog.open(CreateCategoryComponent, {
+      height: '450px',
+      width: '1000px',
+      position: { right: '20%', left: '22%', top: '5%' },
+      panelClass: 'rounded-lg'
     })
   }
 

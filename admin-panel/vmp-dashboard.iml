@@ -7,5 +7,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vmp-dashboard/tmp" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="@material-tailwind/html" level="application" />
   </component>
 </module>
