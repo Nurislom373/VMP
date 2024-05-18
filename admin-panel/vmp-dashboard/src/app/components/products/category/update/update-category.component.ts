@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, Inject, ViewChild} from '@angular/core';
 import {CategoriesService} from "../../../../services/categories.service";
 import {CommonModule} from "@angular/common";
 import {
+  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
   MatDialogContainer,
@@ -10,23 +11,46 @@ import {
   MatDialogTitle
 } from "@angular/material/dialog";
 import {MatButton, MatButtonModule} from "@angular/material/button";
+import {CategoryForm} from "../../../../models/form/category.form";
+import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
+import {CategoryService} from "../service/category.service";
+import {CategoryBadge} from "../../../../models/category";
 
 @Component({
-  selector: 'app-update-category',
+  selector: 'update-category',
   standalone: true,
-  imports: [CommonModule, MatDialogActions, MatButton, MatDialogClose, MatDialogContent, MatButtonModule, MatDialogContainer, MatDialogTitle],
+  imports: [CommonModule, MatDialogActions, MatButton, MatDialogClose, MatDialogContent, MatButtonModule, MatDialogContainer, MatDialogTitle, ReactiveFormsModule, FormsModule],
   templateUrl: './update-category.component.html',
   styleUrl: './update-category.component.css'
 })
 export class UpdateCategoryComponent {
 
+  updateCategoryForm: CategoryForm = new CategoryForm();
+
+  @ViewChild("categoryForm")
+  CategoryForm!: NgForm;
+
   constructor(
+    private categoryService: CategoryService,
     private categoriesService: CategoriesService,
-    private dialogRef: MatDialogRef<UpdateCategoryComponent>
+    private dialogRef: MatDialogRef<UpdateCategoryComponent>,
+    @Inject(MAT_DIALOG_DATA) public category: CategoryBadge
   ) {
+    this.updateCategoryForm.id = category.id;
+    this.updateCategoryForm.name = category.name;
+    this.updateCategoryForm.status = category.status?.valueOf()
   }
 
   getCategoryStatuses() {
-    return this.categoriesService.getCategories()
+    return this.categoriesService.getCategoryStatuses()
+  }
+
+  updateCategory() {
+    this.categoryService.update(this.updateCategoryForm, this.updateCategoryForm.id!)
+      .subscribe(response => {
+        if (response.ok) {
+          console.log("success updated!")
+        }
+      })
   }
 }

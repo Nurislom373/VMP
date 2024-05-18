@@ -7,11 +7,7 @@ import static org.springframework.security.web.server.util.matcher.ServerWebExch
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import org.khasanof.security.AuthoritiesConstants;
 import org.khasanof.security.SecurityUtils;
@@ -50,6 +46,7 @@ import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHe
 import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter.Mode;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import tech.jhipster.config.JHipsterProperties;
@@ -87,7 +84,7 @@ public class SecurityConfiguration {
                     new OrServerWebExchangeMatcher(pathMatchers("/app/**", "/i18n/**", "/content/**", "/swagger-ui/**"))
                 )
             )
-            .cors(withDefaults())
+            .cors(corsSpec -> corsSpec.configurationSource(request -> getCorsConfiguration()))
             .csrf(csrf ->
                 csrf
                     .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
@@ -266,5 +263,13 @@ public class SecurityConfiguration {
                         .doOnNext(newJwt -> users.put(jwt.getSubject(), Mono.just(newJwt))));
             }
         };
+    }
+
+    private CorsConfiguration getCorsConfiguration() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
+        return configuration;
     }
 }

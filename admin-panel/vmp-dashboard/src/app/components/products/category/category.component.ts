@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CategoriesService} from "../../../services/categories.service";
-import {Category, CategoryBadge} from "../../../models/category";
+import {Category, CategoryBadge, CategoryStatus} from "../../../models/category";
 import {CommonModule} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../../../auth/auth.service";
@@ -14,6 +14,7 @@ import {UpdateCategoryComponent} from "./update/update-category.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
 import {CreateCategoryComponent} from "./create/create-category.component";
+import {CategoryService} from "./service/category.service";
 
 @Component({
   selector: 'app-category',
@@ -38,6 +39,7 @@ export class CategoryComponent implements OnInit {
 
   constructor(
     private categoriesService: CategoriesService,
+    private categoryService: CategoryService,
     private httpClient: HttpClient,
     private authService: AuthService,
     private dialog: MatDialog
@@ -45,14 +47,7 @@ export class CategoryComponent implements OnInit {
   }
 
   getCategoryStatuses() {
-    return this.categoriesService.getCategories()
-  }
-
-  addCategory() {
-    this.httpClient.post(this._url, this.categoryForm)
-      .subscribe(data => {
-        this.loadCategories();
-      })
+    return this.categoriesService.getCategoryStatuses()
   }
 
   nextPage() {
@@ -71,11 +66,25 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-  openModal() {
+  addCategory() {
     this.dialog.open(CreateCategoryComponent, {
       height: '450px',
       width: '1000px',
-      position: { right: '20%', left: '22%', top: '5%' },
+      position: {right: '20%', left: '22%', top: '5%'},
+      panelClass: 'rounded-lg'
+    })
+  }
+
+  updateCategory(category: CategoryBadge) {
+    this.dialog.open(UpdateCategoryComponent, {
+      data: {
+        id: category.id,
+        name: category.name,
+        status: category.status
+      },
+      height: '450px',
+      width: '1000px',
+      position: {right: '20%', left: '22%', top: '5%'},
       panelClass: 'rounded-lg'
     })
   }
@@ -100,14 +109,18 @@ export class CategoryComponent implements OnInit {
   }
 
   private loadCategories() {
-    this.httpClient.get<Category[]>(this._url + `?size=${this.perPageElementSize}&page=${this.currentPage}&sort=id,desc`)
-      .subscribe(categories => {
-        this.categories = this.categoriesService.mapCategoriesToCategoriesBadge(categories);
+    this.categoryService.getAll(`size=${this.perPageElementSize}&page=${this.currentPage}&sort=id,desc`)
+      .subscribe(response => {
+        if (response.ok) {
+          this.categories = this.categoriesService.mapCategoriesToCategoriesBadge(response.body!);
+        }
       })
 
-    this.httpClient.get<number>(this._url + '/count')
-      .subscribe(categoriesCount => {
-        this.categoriesCount = categoriesCount;
+    this.categoryService.count()
+      .subscribe(response => {
+        if (response.ok) {
+          this.categoriesCount = response.body!;
+        }
       })
   }
 

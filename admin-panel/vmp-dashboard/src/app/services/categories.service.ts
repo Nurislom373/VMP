@@ -12,7 +12,7 @@ export class CategoriesService {
   constructor(private apiServices: ApiService, private categoryStatusBadgeService: CategoryStatusBadgeService) {
   }
 
-  getCategories() {
+  getCategoryStatuses() {
     return this.categoryStatusBadgeService.getCategoryStatusBadges();
   }
 
