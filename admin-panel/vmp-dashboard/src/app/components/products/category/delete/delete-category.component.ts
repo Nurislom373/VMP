@@ -13,6 +13,8 @@ import {MatButton, MatButtonModule} from "@angular/material/button";
 import {FormsModule} from "@angular/forms";
 import {CategoryService} from "../service/category.service";
 import {CategoryBadge} from "../../../../models/category";
+import {StateActionRegistry} from "../../../../services/state.action.registry";
+import {CATEGORY_KEY} from "../../../../core/global.constants";
 
 @Component({
   selector: 'delete-category',
@@ -24,6 +26,7 @@ import {CategoryBadge} from "../../../../models/category";
 export class DeleteCategoryComponent {
 
   constructor(
+    private stateActionRegistry: StateActionRegistry,
     private categoryService: CategoryService,
     private dialogRef: MatDialogRef<DeleteCategoryComponent>,
     @Inject(MAT_DIALOG_DATA) public category: CategoryBadge
@@ -34,8 +37,12 @@ export class DeleteCategoryComponent {
     this.categoryService.delete(this.category.id!)
       .subscribe(response => {
         if (response.status === 204) {
-          console.log('success deleted')
+          this.loadCategoriesAction();
         }
       })
+  }
+
+  private loadCategoriesAction() {
+    this.stateActionRegistry.executeAction(CATEGORY_KEY);
   }
 }

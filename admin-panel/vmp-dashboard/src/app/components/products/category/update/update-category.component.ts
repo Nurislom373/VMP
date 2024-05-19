@@ -1,5 +1,4 @@
 import {Component, Inject, ViewChild} from '@angular/core';
-import {CategoriesService} from "../../../../services/categories.service";
 import {CommonModule} from "@angular/common";
 import {
   MAT_DIALOG_DATA,
@@ -15,6 +14,8 @@ import {CategoryForm} from "../../../../models/form/category.form";
 import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
 import {CategoryService} from "../service/category.service";
 import {CategoryBadge} from "../../../../models/category";
+import {CATEGORY_KEY} from "../../../../core/global.constants";
+import {StateActionRegistry} from "../../../../services/state.action.registry";
 
 @Component({
   selector: 'update-category',
@@ -31,8 +32,8 @@ export class UpdateCategoryComponent {
   CategoryForm!: NgForm;
 
   constructor(
+    private stateActionRegistry: StateActionRegistry,
     private categoryService: CategoryService,
-    private categoriesService: CategoriesService,
     private dialogRef: MatDialogRef<UpdateCategoryComponent>,
     @Inject(MAT_DIALOG_DATA) public category: CategoryBadge
   ) {
@@ -42,15 +43,19 @@ export class UpdateCategoryComponent {
   }
 
   getCategoryStatuses() {
-    return this.categoriesService.getCategoryStatuses()
+    return this.categoryService.getCategoryStatuses()
   }
 
   updateCategory() {
     this.categoryService.update(this.updateCategoryForm, this.updateCategoryForm.id!)
       .subscribe(response => {
         if (response.ok) {
-          console.log("success updated!")
+          this.loadCategoriesAction();
         }
       })
+  }
+
+  private loadCategoriesAction() {
+    this.stateActionRegistry.executeAction(CATEGORY_KEY);
   }
 }

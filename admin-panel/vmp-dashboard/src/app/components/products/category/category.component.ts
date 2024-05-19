@@ -1,21 +1,19 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {CategoriesService} from "../../../services/categories.service";
 import {CategoryBadge} from "../../../models/category";
 import {CommonModule} from "@angular/common";
-import {HttpClient} from "@angular/common/http";
-import {AuthService} from "../../../auth/auth.service";
-import {initFlowbite} from "flowbite";
 import {NavbarComponent} from "../../../layout/navbar/navbar.component";
 import {SidebarComponent} from "../../../layout/sidebar/sidebar.component";
-import {CategoryForm} from "../../../models/form/category.form";
 import {FormsModule, NgForm} from "@angular/forms";
-import {Pair} from "../../../models/pair";
 import {UpdateCategoryComponent} from "./update/update-category.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
 import {CreateCategoryComponent} from "./create/create-category.component";
 import {CategoryService} from "./service/category.service";
 import {DeleteCategoryComponent} from "./delete/delete-category.component";
+import {StateAction} from "../../../services/state.action";
+import {StateActionRegistry} from "../../../services/state.action.registry";
+import {StateActionNode} from "../../../models/state.action.node";
+import {CATEGORY_KEY} from "../../../core/global.constants";
 
 @Component({
   selector: 'app-category',
@@ -24,50 +22,54 @@ import {DeleteCategoryComponent} from "./delete/delete-category.component";
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })
-export class CategoryComponent implements OnInit {
+export class CategoryComponent implements OnInit, StateAction {
 
   @ViewChild("CategoryForm")
   CategoryForm!: NgForm;
 
   categories: CategoryBadge[] = [];
-  categoryForm: CategoryForm = new CategoryForm();
-  perPageElementSize: number = 10
-  categoriesCount: number = 0
-  currentPage: number = 0
-  pagesRange: Array<Pair> = [];
-  pagesNumber: Array<number> = [];
+  pageSize: number = 10
+  collectionSize: number = 0
+  currentPage: number = 1
+  totalPages: any[] = [];
 
   constructor(
-    private categoriesService: CategoriesService,
+    private stateActionRegistry: StateActionRegistry,
     private categoryService: CategoryService,
-    private httpClient: HttpClient,
-    private authService: AuthService,
     private dialog: MatDialog
   ) {
   }
 
-  getCategoryStatuses() {
-    return this.categoriesService.getCategoryStatuses()
+  action(): void {
+    this.loadCategories()
   }
 
-  nextPage() {
-    let pages = this.getPageCount();
-    console.log(`pages count ${pages}`)
-    if ((pages - 1) > this.currentPage) {
-      this.currentPage++;
-      this.loadCategories()
-    }
+  /** Set next page number */
+  next() {
+    const nextPage = this.currentPage + 1;
+    nextPage <= this.totalPages.length && this.setPageNumber(nextPage);
+    this.loadCategories();
+  }
+
+  /** Set previous page number */
+  previous() {
+    const previousPage = this.currentPage - 1;
+    previousPage >= 1 && this.setPageNumber(previousPage);
+    this.loadCategories();
+  }
+
+  selectPageNumber(pageNumber: number) {
+    this.setPageNumber(pageNumber);
+    this.loadCategories();
+  }
+
+  /** Set page number */
+  setPageNumber(pageNumber: number) {
+    this.currentPage = pageNumber;
   }
 
   private getPageCount() {
-    return Math.ceil(this.categoriesCount / this.perPageElementSize);
-  }
-
-  previousPage() {
-    if (0 < this.currentPage) {
-      this.currentPage--;
-      this.loadCategories()
-    }
+    return Math.ceil(this.collectionSize / this.pageSize);
   }
 
   addCategory() {
@@ -108,55 +110,24 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    initFlowbite();
-
-    let headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Authorization': ''
-    }
-
-    this.authService.keycloak.getToken()
-      .then(token => {
-        console.log('Token : ' + token)
-        headers['Authorization'] = 'Bearer ' + token
-      })
-
     this.loadCategories();
+    this.stateActionRegistry.add(new StateActionNode(CATEGORY_KEY, this));
   }
 
   private loadCategories() {
-    this.categoryService.getAll(`size=${this.perPageElementSize}&page=${this.currentPage}&sort=id,desc`)
+    this.categoryService.getAll(`size=${this.pageSize}&page=${this.currentPage - 1}&sort=id,desc`)
       .subscribe(response => {
         if (response.ok) {
-          this.categories = this.categoriesService.mapCategoriesToCategoriesBadge(response.body!);
+          this.categories = this.categoryService.mapCategoriesToCategoriesBadge(response.body!);
         }
       })
 
     this.categoryService.count()
       .subscribe(response => {
         if (response.ok) {
-          this.categoriesCount = response.body!;
+          this.collectionSize = response.body!;
+          this.totalPages = new Array(this.getPageCount());
         }
       })
-  }
-
-  calculateElementsPerPage(totalElements: number, totalPages: number) {
-
-    let pageCount = this.getPageCount();
-    let currentPage = this.currentPage;
-
-    const result: Array<number> = [];
-
-    for (let i = 1; i <= 5; i++) {
-      let prePageNum = currentPage++;
-
-      if (currentPage == 0) {
-        result.push(prePageNum);
-      }
-    }
-
-
   }
 }

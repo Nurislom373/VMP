@@ -9,11 +9,12 @@ import {
   MatDialogTitle
 } from "@angular/material/dialog";
 import {MatButton, MatButtonModule} from "@angular/material/button";
-import {CategoriesService} from "../../../../services/categories.service";
 import {CategoryForm} from "../../../../models/form/category.form";
 import {FormsModule, NgForm} from "@angular/forms";
 import {CategoryService} from "../service/category.service";
 import {Category, CategoryStatus} from "../../../../models/category";
+import {StateActionRegistry} from "../../../../services/state.action.registry";
+import {CATEGORY_KEY} from "../../../../core/global.constants";
 
 @Component({
   selector: 'create-category',
@@ -30,21 +31,21 @@ export class CreateCategoryComponent {
   CategoryForm!: NgForm;
 
   constructor(
-    private categoriesService: CategoriesService,
+    private stateActionRegistry: StateActionRegistry,
     private categoryService: CategoryService,
     private dialogRef: MatDialogRef<CreateCategoryComponent>
   ) {
   }
 
   getCategoryStatuses() {
-    return this.categoriesService.getCategoryStatuses()
+    return this.categoryService.getCategoryStatuses()
   }
 
   createCategory() {
     this.categoryService.create(this.toEntity(this.addCategoryForm))
       .subscribe(response => {
         if (response.status == 201) {
-          console.log("success created")
+          this.loadCategoriesAction();
         }
       })
   }
@@ -54,5 +55,9 @@ export class CreateCategoryComponent {
       name: categoryForm.name,
       status: categoryForm.status as CategoryStatus
     };
+  }
+
+  private loadCategoriesAction() {
+    this.stateActionRegistry.executeAction(CATEGORY_KEY);
   }
 }

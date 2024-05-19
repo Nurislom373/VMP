@@ -1,5 +1,5 @@
 import {Injectable, OnInit} from "@angular/core";
-import {CategoryStatus, CategoryStatusBadge} from "../models/category";
+import {CategoryStatus, CategoryStatusBadge} from "../../../../models/category";
 
 @Injectable({
   providedIn: 'root'
