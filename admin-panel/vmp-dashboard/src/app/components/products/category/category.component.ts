@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CategoriesService} from "../../../services/categories.service";
-import {Category, CategoryBadge, CategoryStatus} from "../../../models/category";
+import {CategoryBadge} from "../../../models/category";
 import {CommonModule} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../../../auth/auth.service";
@@ -15,6 +15,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
 import {CreateCategoryComponent} from "./create/create-category.component";
 import {CategoryService} from "./service/category.service";
+import {DeleteCategoryComponent} from "./delete/delete-category.component";
 
 @Component({
   selector: 'app-category',
@@ -25,8 +26,6 @@ import {CategoryService} from "./service/category.service";
 })
 export class CategoryComponent implements OnInit {
 
-  private readonly _url = 'http://localhost:8083/api/categories';
-
   @ViewChild("CategoryForm")
   CategoryForm!: NgForm;
 
@@ -35,7 +34,8 @@ export class CategoryComponent implements OnInit {
   perPageElementSize: number = 10
   categoriesCount: number = 0
   currentPage: number = 0
-  pagesRange: Array<Pair> = []
+  pagesRange: Array<Pair> = [];
+  pagesNumber: Array<number> = [];
 
   constructor(
     private categoriesService: CategoriesService,
@@ -51,12 +51,16 @@ export class CategoryComponent implements OnInit {
   }
 
   nextPage() {
-    let pages = Math.ceil(this.categoriesCount / this.perPageElementSize);
+    let pages = this.getPageCount();
     console.log(`pages count ${pages}`)
     if ((pages - 1) > this.currentPage) {
       this.currentPage++;
       this.loadCategories()
     }
+  }
+
+  private getPageCount() {
+    return Math.ceil(this.categoriesCount / this.perPageElementSize);
   }
 
   previousPage() {
@@ -85,6 +89,20 @@ export class CategoryComponent implements OnInit {
       height: '450px',
       width: '1000px',
       position: {right: '20%', left: '22%', top: '5%'},
+      panelClass: 'rounded-lg'
+    })
+  }
+
+  deleteCategory(category: CategoryBadge) {
+    this.dialog.open(DeleteCategoryComponent, {
+      data: {
+        id: category.id,
+        name: category.name,
+        status: category.status
+      },
+      height: '230px',
+      width: '1000px',
+      position: {right: '20%', left: '22%', top: '2%'},
       panelClass: 'rounded-lg'
     })
   }
@@ -124,20 +142,21 @@ export class CategoryComponent implements OnInit {
       })
   }
 
-  calculateElementsPerPage(totalElements: number, totalPages: number): Array<Pair> {
-    const elementsPerPage = Math.ceil(totalElements / totalPages);
-    const result: Array<Pair> = [];
+  calculateElementsPerPage(totalElements: number, totalPages: number) {
 
-    let startIndex = 0;
-    let endIndex = 0;
+    let pageCount = this.getPageCount();
+    let currentPage = this.currentPage;
 
-    for (let i = 1; i <= totalPages; i++) {
-      startIndex = endIndex + 1;
-      endIndex = Math.min(totalElements, i * elementsPerPage);
-      const pair = new Pair(startIndex, endIndex);
-      result.push(pair);
+    const result: Array<number> = [];
+
+    for (let i = 1; i <= 5; i++) {
+      let prePageNum = currentPage++;
+
+      if (currentPage == 0) {
+        result.push(prePageNum);
+      }
     }
 
-    return result;
+
   }
 }

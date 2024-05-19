@@ -1,0 +1,20 @@
+<div *ngIf="category">
+  <div class="px-8 py-8">
+    <div>
+      <h1 class="text-5xl">Delete category</h1>
+    </div>
+    <div class="text-xl">
+      Are you sure you want to delete Category - {{ category.name }}
+    </div>
+    <div class="flex flex-wrap items-center justify-between shrink-0 text-blue-gray-500 pt-4">
+      <button mat-dialog-close data-ripple-dark="true" data-dialog-close="true"
+              class="px-6 py-3 mr-1 font-sans text-xs font-bold text-gray-800 bg-gray-100 transition-all rounded-md middle none center hover:bg-gray-500/10 active:bg-gray-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+        Cancel
+      </button>
+      <button mat-dialog-close (click)="deleteCategory()" data-ripple-light="true" data-dialog-close="true"
+              class="middle none center rounded-md bg-gray-800 py-3 px-6 font-sans text-xs font-bold text-white shadow-md shadow-gray-500/20 transition-all hover:shadow-lg hover:shadow-gray-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
