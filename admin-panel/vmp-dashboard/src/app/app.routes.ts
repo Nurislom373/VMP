@@ -11,11 +11,11 @@ const isAuthenticated: CanActivateFn = (route, state) => {
 export const routes: Routes = [
   {
     path: '',
+    canActivate: [isAuthenticated],
     component: HomeComponent
   },
   {
     path: 'category',
-    canActivate: [isAuthenticated],
     component: CategoryComponent
   }
 ];

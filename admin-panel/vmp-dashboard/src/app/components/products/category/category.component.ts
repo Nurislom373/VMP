@@ -14,11 +14,12 @@ import {StateAction} from "../../../services/state.action";
 import {StateActionRegistry} from "../../../services/state.action.registry";
 import {StateActionNode} from "../../../models/state.action.node";
 import {CATEGORY_KEY} from "../../../core/global.constants";
+import {CategoryStatusComponent} from "./status/category.status.component";
 
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, SidebarComponent, FormsModule, UpdateCategoryComponent, MatButton],
+  imports: [CommonModule, NavbarComponent, SidebarComponent, FormsModule, UpdateCategoryComponent, MatButton, CategoryStatusComponent],
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })

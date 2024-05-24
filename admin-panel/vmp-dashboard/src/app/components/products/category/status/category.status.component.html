@@ -1,0 +1,15 @@
+<div [ngSwitch]="status" class="max-w-fit">
+  <div *ngSwitchDefault> {{ status }}</div>
+  <div *ngSwitchCase="'ACTIVE'"
+       class="relative grid select-none items-center whitespace-nowrap rounded-lg bg-green-500 py-1.5 px-2 font-sans text-xs font-bold capitalize text-white">
+    <span> {{ status }} </span>
+  </div>
+  <div *ngSwitchCase="'BLOCKED'"
+       class="relative grid select-none items-center whitespace-nowrap rounded-lg bg-indigo-500 py-1.5 px-2 font-sans text-xs font-bold uppercase text-white">
+    <span> {{ status }} </span>
+  </div>
+  <div *ngSwitchCase="'DELETED'"
+       class="relative grid select-none items-center whitespace-nowrap rounded-lg bg-red-500 py-1.5 px-2 font-sans text-xs font-bold uppercase text-white">
+    <span> {{ status }} </span>
+  </div>
+</div>
