@@ -15,8 +15,8 @@ import {StateActionRegistry} from "../../../services/state.action.registry";
 import {StateActionNode} from "../../../models/state.action.node";
 import {CATEGORY_KEY} from "../../../core/global.constants";
 import {CategoryStatusComponent} from "./status/category.status.component";
-import {initFlowbite} from "flowbite";
 import {CategoryFilterComponent} from "./filter/category.filter.component";
+import {FilterModel} from "../../../models/filter/filter.model";
 
 @Component({
   selector: 'app-category',
@@ -31,10 +31,12 @@ export class CategoryComponent implements OnInit, StateAction {
   CategoryForm!: NgForm;
 
   categories: CategoryBadge[] = [];
+  filterModels: FilterModel[] = [];
+  totalPages: any[] = [];
+  sort: string = "id,desc";
   pageSize: number = 10
   collectionSize: number = 0
   currentPage: number = 1
-  totalPages: any[] = [];
 
   constructor(
     private stateActionRegistry: StateActionRegistry,
@@ -43,8 +45,13 @@ export class CategoryComponent implements OnInit, StateAction {
   ) {
   }
 
+  changeProperties(property: any): void {
+    this.filterModels = property;
+    this.loadCategories();
+  }
+
   action(): void {
-    this.loadCategories()
+    this.loadCategories();
   }
 
   /** Set next page number */
@@ -129,12 +136,16 @@ export class CategoryComponent implements OnInit, StateAction {
   }
 
   private loadCategories() {
-    this.categoryService.getAll(`size=${this.pageSize}&page=${this.currentPage - 1}&sort=id,desc`)
-      .subscribe(response => {
-        if (response.ok) {
-          this.categories = this.categoryService.mapCategoriesToCategoriesBadge(response.body!);
-        }
-      })
+    this.categoryService.getByQueryPagination({
+      sort: this.sort,
+      size: this.pageSize,
+      page: this.currentPage,
+      filterModels: this.filterModels
+    }).subscribe(response => {
+      if (response.ok) {
+        this.categories = this.categoryService.mapCategoriesToCategoriesBadge(response.body!);
+      }
+    })
 
     this.categoryService.count()
       .subscribe(response => {

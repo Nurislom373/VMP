@@ -4,6 +4,7 @@ import {Category, CategoryBadge, CategoryStatus} from "../../../../models/catego
 import {HttpClient} from "@angular/common/http";
 import {MicroserviceConfigService} from "../../../../core/microservice.config.service";
 import {CategoryStatusBadgeService} from "./category.status.badge.service";
+import {FilterService} from "../../../../core/filter.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,11 @@ export class CategoryService extends AbstractService<Category, number> {
 
   constructor(
     httpClient: HttpClient,
+    filterService: FilterService,
     microserviceConfig: MicroserviceConfigService,
     private categoryStatusBadgeService: CategoryStatusBadgeService
   ) {
-    super(httpClient, microserviceConfig);
+    super(httpClient, filterService, microserviceConfig);
   }
 
   getCategoryStatuses() {

@@ -2,6 +2,9 @@ import {Observable} from "rxjs";
 import {BaseService} from "./base.service";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {MicroserviceConfigService} from "./microservice.config.service";
+import {FilterModel} from "../models/filter/filter.model";
+import {FilterService} from "./filter.service";
+import {QueryCriteria} from "../models/filter/query.criteria";
 
 /**
  * @author Nurislom
@@ -11,8 +14,24 @@ export abstract class AbstractService<E, ID> implements BaseService<E, ID> {
 
   protected constructor(
     protected httpClient: HttpClient,
+    protected filterService: FilterService,
     protected microserviceConfig: MicroserviceConfigService
   ) {
+  }
+
+  public getByQuery(filterModels: FilterModel[]): Observable<HttpResponse<E[]>> {
+    let url = this.filterService.filterModelJoinUrl(this.getEndpoint(), filterModels);
+    return this.httpClient.get<E[]>(url, {observe: 'response'});
+  }
+
+  public getByQueryPagination(queryCriteria: QueryCriteria): Observable<HttpResponse<E[]>> {
+    let url = this.filterService.filterModelJoinUrl(this.getEndpoint(), queryCriteria.filterModels!);
+    let paginationUrl = this.joinPagination(url, queryCriteria.size, queryCriteria.page, queryCriteria.sort);
+    return this.httpClient.get<E[]>(paginationUrl, {observe: 'response'});
+  }
+
+  private joinPagination(url: string, size: number, page: number, sort?: string): string {
+    return `${url.includes('?') ? `${url}&` : `${url}?` }size=${size}&page=${page - 1}${ sort !== null ? `&sort=${sort}` : '' }`;
   }
 
   public getAll(queryParams: string): Observable<HttpResponse<E[]>> {
