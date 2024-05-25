@@ -15,11 +15,13 @@ import {StateActionRegistry} from "../../../services/state.action.registry";
 import {StateActionNode} from "../../../models/state.action.node";
 import {CATEGORY_KEY} from "../../../core/global.constants";
 import {CategoryStatusComponent} from "./status/category.status.component";
+import {initFlowbite} from "flowbite";
+import {CategoryFilterComponent} from "./filter/category.filter.component";
 
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, SidebarComponent, FormsModule, UpdateCategoryComponent, MatButton, CategoryStatusComponent],
+  imports: [CommonModule, NavbarComponent, SidebarComponent, FormsModule, UpdateCategoryComponent, MatButton, CategoryStatusComponent, CategoryFilterComponent],
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })
@@ -71,6 +73,17 @@ export class CategoryComponent implements OnInit, StateAction {
 
   private getPageCount() {
     return Math.ceil(this.collectionSize / this.pageSize);
+  }
+
+  openFilterModal() {
+    let htmlElement = document.getElementById('filter-popover');
+    let classList = htmlElement?.classList;
+
+    if (classList?.contains('hidden')) {
+      classList.remove('hidden');
+      return;
+    }
+    classList?.add('hidden');
   }
 
   addCategory() {
