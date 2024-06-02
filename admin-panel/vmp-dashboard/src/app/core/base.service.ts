@@ -13,6 +13,12 @@ export interface BaseService<E, ID> {
 
   /**
    *
+   * @param filterModels
+   */
+  countByQuery(filterModels: FilterModel[]): Observable<HttpResponse<number>>;
+
+  /**
+   *
    * @param queryCriteria
    */
   getByQueryPagination(queryCriteria: QueryCriteria): Observable<HttpResponse<E[]>>;

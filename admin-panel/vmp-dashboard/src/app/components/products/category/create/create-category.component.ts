@@ -15,11 +15,22 @@ import {CategoryService} from "../service/category.service";
 import {Category, CategoryStatus} from "../../../../models/category";
 import {StateActionRegistry} from "../../../../services/state.action.registry";
 import {CATEGORY_KEY} from "../../../../core/global.constants";
+import {NzColDirective} from "ng-zorro-antd/grid";
+import {NzFormControlComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
+import {NzInputDirective} from "ng-zorro-antd/input";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {
+  CustomPrimaryButtonComponent
+} from "../../../../core/buttons/custom-primary-button/custom-primary-button.component";
+import {
+  CustomNoneOutlineButtonComponent
+} from "../../../../core/buttons/custom-none-outline-button/custom-none-outline-button.component";
 
 @Component({
   selector: 'create-category',
   standalone: true,
-  imports: [CommonModule, MatDialogActions, MatButton, MatDialogClose, MatDialogContent, MatButtonModule, MatDialogContainer, MatDialogTitle, FormsModule],
+  imports: [CommonModule, MatDialogActions, MatButton, MatDialogClose, MatDialogContent, MatButtonModule, MatDialogContainer, MatDialogTitle, FormsModule, NzColDirective, NzFormControlComponent, NzFormLabelComponent, NzInputDirective, NzOptionComponent, NzSelectComponent, NzButtonComponent, CustomPrimaryButtonComponent, CustomNoneOutlineButtonComponent],
   templateUrl: './create-category.component.html',
   styleUrl: './create-category.component.css'
 })

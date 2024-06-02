@@ -15,11 +15,17 @@ import {CategoryService} from "../service/category.service";
 import {CategoryBadge} from "../../../../models/category";
 import {StateActionRegistry} from "../../../../services/state.action.registry";
 import {CATEGORY_KEY} from "../../../../core/global.constants";
+import {
+  CustomNoneOutlineButtonComponent
+} from "../../../../core/buttons/custom-none-outline-button/custom-none-outline-button.component";
+import {
+  CustomPrimaryButtonComponent
+} from "../../../../core/buttons/custom-primary-button/custom-primary-button.component";
 
 @Component({
   selector: 'delete-category',
   standalone: true,
-  imports: [CommonModule, MatDialogActions, MatButton, MatDialogClose, MatDialogContent, MatButtonModule, MatDialogContainer, MatDialogTitle, FormsModule],
+  imports: [CommonModule, MatDialogActions, MatButton, MatDialogClose, MatDialogContent, MatButtonModule, MatDialogContainer, MatDialogTitle, FormsModule, CustomNoneOutlineButtonComponent, CustomPrimaryButtonComponent],
   templateUrl: './delete-category.component.html',
   styleUrl: './delete-category.component.css'
 })

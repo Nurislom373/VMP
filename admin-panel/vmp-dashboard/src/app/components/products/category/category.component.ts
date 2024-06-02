@@ -3,7 +3,7 @@ import {CategoryBadge} from "../../../models/category";
 import {CommonModule} from "@angular/common";
 import {NavbarComponent} from "../../../layout/navbar/navbar.component";
 import {SidebarComponent} from "../../../layout/sidebar/sidebar.component";
-import {FormsModule, NgForm} from "@angular/forms";
+import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
 import {UpdateCategoryComponent} from "./update/update-category.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
@@ -17,25 +17,56 @@ import {CATEGORY_KEY} from "../../../core/global.constants";
 import {CategoryStatusComponent} from "./status/category.status.component";
 import {CategoryFilterComponent} from "./filter/category.filter.component";
 import {FilterModel} from "../../../models/filter/filter.model";
+import {NzButtonComponent, NzButtonGroupComponent} from "ng-zorro-antd/button";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzFlexDirective} from "ng-zorro-antd/flex";
+import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
+import {
+  NzCellBreakWordDirective,
+  NzTableComponent,
+  NzTableModule,
+  NzTableQueryParams,
+  NzThAddOnComponent
+} from "ng-zorro-antd/table";
+import {NzPaginationComponent} from "ng-zorro-antd/pagination";
+import {NzCollapseComponent, NzCollapsePanelComponent} from "ng-zorro-antd/collapse";
+import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
+import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
+import {NzSpaceComponent, NzSpaceItemDirective} from "ng-zorro-antd/space";
+import {NzRadioComponent, NzRadioGroupComponent} from "ng-zorro-antd/radio";
+import {
+  CustomPrimaryButtonComponent
+} from "../../../core/buttons/custom-primary-button/custom-primary-button.component";
+import {CategoryForm} from '../../../models/form/category.form';
+import {FieldType} from "../../../models/filter/field.type";
 
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, SidebarComponent, FormsModule, UpdateCategoryComponent, MatButton, CategoryStatusComponent, CategoryFilterComponent],
+  imports: [CommonModule, NzTableModule, NavbarComponent, SidebarComponent, FormsModule, UpdateCategoryComponent, MatButton, CategoryStatusComponent, CategoryFilterComponent, NzButtonComponent, NzIconDirective, NzFlexDirective, NzInputGroupComponent, NzInputDirective, NzThAddOnComponent, NzCellBreakWordDirective, NzTableComponent, NzPaginationComponent, NzCollapseComponent, NzCollapsePanelComponent, ReactiveFormsModule, NzFormDirective, NzFormItemComponent, NzColDirective, NzRowDirective, NzFormLabelComponent, NzSelectComponent, NzOptionComponent, NzFormControlComponent, NzSpaceComponent, NzSpaceItemDirective, NzRadioGroupComponent, NzRadioComponent, NzButtonGroupComponent, CustomPrimaryButtonComponent],
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })
 export class CategoryComponent implements OnInit, StateAction {
 
-  @ViewChild("CategoryForm")
+  filterCategoryForm: CategoryForm = new CategoryForm();
+
+  @ViewChild("categoryForm")
   CategoryForm!: NgForm;
 
+  filterStatus = [
+    { text: 'ACTIVE', value: 'ACTIVE' },
+    { text: 'BLOCKED', value: 'BLOCKED' }
+  ]
+
+  isActiveFilterPanel = true;
+  loading = false;
   categories: CategoryBadge[] = [];
   filterModels: FilterModel[] = [];
-  totalPages: any[] = [];
   sort: string = "id,desc";
   pageSize: number = 10
-  collectionSize: number = 0
+  totalPageSize: number = 0
   currentPage: number = 1
 
   constructor(
@@ -43,6 +74,10 @@ export class CategoryComponent implements OnInit, StateAction {
     private categoryService: CategoryService,
     private dialog: MatDialog
   ) {
+  }
+
+  getCategoryStatus() {
+    return this.categoryService.getCategoryStatuses();
   }
 
   changeProperties(property: any): void {
@@ -54,23 +89,21 @@ export class CategoryComponent implements OnInit, StateAction {
     this.loadCategories();
   }
 
-  /** Set next page number */
-  next() {
-    const nextPage = this.currentPage + 1;
-    nextPage <= this.totalPages.length && this.setPageNumber(nextPage);
-    this.loadCategories();
-  }
-
-  /** Set previous page number */
-  previous() {
-    const previousPage = this.currentPage - 1;
-    previousPage >= 1 && this.setPageNumber(previousPage);
-    this.loadCategories();
-  }
-
-  selectPageNumber(pageNumber: number) {
+  /**
+   *
+   * @param pageNumber
+   */
+  changePageIndex(pageNumber: number) {
     this.setPageNumber(pageNumber);
     this.loadCategories();
+  }
+
+  /**
+   *
+   * @param params
+   */
+  onQueryParamsChange(params: NzTableQueryParams) {
+    console.log(params);
   }
 
   /** Set page number */
@@ -78,19 +111,29 @@ export class CategoryComponent implements OnInit, StateAction {
     this.currentPage = pageNumber;
   }
 
-  private getPageCount() {
-    return Math.ceil(this.collectionSize / this.pageSize);
+  /**
+   *
+   */
+  getPageCount() {
+    return Math.ceil(this.totalPageSize / this.pageSize);
   }
 
-  openFilterModal() {
-    let htmlElement = document.getElementById('filter-popover');
-    let classList = htmlElement?.classList;
+  openCloseFilterModal() {
+    this.isActiveFilterPanel = !this.isActiveFilterPanel;
+  }
 
-    if (classList?.contains('hidden')) {
-      classList.remove('hidden');
-      return;
-    }
-    classList?.add('hidden');
+  applyFilter() {
+    this.filterModels = this.createFilterModels(this.filterCategoryForm);
+    this.loadCategories();
+  }
+
+  resetFilter() {
+    this.filterCategoryForm.name = "";
+    this.filterCategoryForm.id = undefined;
+    this.filterCategoryForm.status = undefined;
+
+    this.filterModels = [];
+    this.loadCategories();
   }
 
   addCategory() {
@@ -130,12 +173,32 @@ export class CategoryComponent implements OnInit, StateAction {
     })
   }
 
+  private createFilterModels(filterCategoryForm: CategoryForm): FilterModel[] {
+    let filterModels: FilterModel[] = []
+
+    if (filterCategoryForm.id != undefined) {
+      filterModels.push(new FilterModel('id.equals', FieldType.TEXT, filterCategoryForm.id));
+    }
+
+    if (filterCategoryForm.name.trim().length != 0) {
+      filterModels.push(new FilterModel('name.contains', FieldType.TEXT, filterCategoryForm.name));
+    }
+
+    if (filterCategoryForm.status != undefined) {
+      filterModels.push(new FilterModel('status.equals', FieldType.TEXT, filterCategoryForm.status));
+    }
+    return filterModels;
+  }
+
   ngOnInit(): void {
     this.loadCategories();
     this.stateActionRegistry.add(new StateActionNode(CATEGORY_KEY, this));
   }
 
   private loadCategories() {
+    console.log('Filter Models ' + this.filterModels.length);
+
+    // load data
     this.categoryService.getByQueryPagination({
       sort: this.sort,
       size: this.pageSize,
@@ -147,11 +210,12 @@ export class CategoryComponent implements OnInit, StateAction {
       }
     })
 
-    this.categoryService.count()
+    // data count
+    this.categoryService.countByQuery(this.filterModels)
       .subscribe(response => {
         if (response.ok) {
-          this.collectionSize = response.body!;
-          this.totalPages = new Array(this.getPageCount());
+          console.log('total count ' + response.body);
+          this.totalPageSize = response.body!;
         }
       })
   }

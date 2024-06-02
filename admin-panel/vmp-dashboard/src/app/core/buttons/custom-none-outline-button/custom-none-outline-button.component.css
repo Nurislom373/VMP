@@ -1,0 +1,17 @@
+.ant-btn-custom-none-outline {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  font-weight: 600;
+  border: none;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .12);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.ant-btn-custom-none-outline:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}

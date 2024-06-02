@@ -1,10 +1,21 @@
-<mat-drawer-container>
-  <mat-drawer mode="side" opened>
+<!--<mat-drawer-container>-->
+<!--  <mat-drawer mode="side" opened>-->
+<!--    <app-sidebar></app-sidebar>-->
+<!--  </mat-drawer>-->
+<!--  <mat-drawer-content>-->
+<!--    -->
+<!--  </mat-drawer-content>-->
+<!--</mat-drawer-container>-->
+
+<nz-layout>
+  <nz-layout>
     <app-sidebar></app-sidebar>
-  </mat-drawer>
-  <mat-drawer-content>
-    <div class="pt-8 pl-72 pr-10 pb-10 h-screen bg-gray-50">
-      <router-outlet/>
-    </div>
-  </mat-drawer-content>
-</mat-drawer-container>
+  </nz-layout>
+  <nz-layout>
+    <nz-content>
+      <div class="pt-8 pl-72 pr-10 pb-10 h-screen bg-gray-50">
+        <router-outlet/>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

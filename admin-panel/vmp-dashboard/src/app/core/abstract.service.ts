@@ -24,6 +24,12 @@ export abstract class AbstractService<E, ID> implements BaseService<E, ID> {
     return this.httpClient.get<E[]>(url, {observe: 'response'});
   }
 
+  public countByQuery(filterModels: FilterModel[]): Observable<HttpResponse<number>> {
+    let endpoint = this.getEndpoint();
+    let url = this.filterService.filterModelJoinUrl(`${endpoint}/count`, filterModels);
+    return this.httpClient.get<number>(url, {observe: 'response'});
+  }
+
   public getByQueryPagination(queryCriteria: QueryCriteria): Observable<HttpResponse<E[]>> {
     let url = this.filterService.filterModelJoinUrl(this.getEndpoint(), queryCriteria.filterModels!);
     let paginationUrl = this.joinPagination(url, queryCriteria.size, queryCriteria.page, queryCriteria.sort);

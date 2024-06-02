@@ -1,10 +1,17 @@
 import {APP_INITIALIZER, ApplicationConfig, Provider} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
+import { IconDefinition } from '@ant-design/icons-angular';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { routes } from './app.routes';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {KeycloakBearerInterceptor, KeycloakService} from "keycloak-angular";
 import {provideAnimations} from "@angular/platform-browser/animations";
+
+import { PlusOutline } from '@ant-design/icons-angular/icons';
+
+const icons: IconDefinition[] = [ PlusOutline ];
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -44,6 +51,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()), // Provides HttpClient with interceptors
     KeycloakService,
     KeycloakInitializerProvider,
-    KeycloakBearerInterceptorProvider
+    KeycloakBearerInterceptorProvider,
   ]
 };
