@@ -36,7 +36,7 @@ import {
 })
 export class UpdateCategoryComponent {
 
-  updateCategoryForm: CategoryForm = new CategoryForm();
+  updateForm: CategoryForm = new CategoryForm();
 
   @ViewChild("categoryForm")
   CategoryForm!: NgForm;
@@ -47,25 +47,25 @@ export class UpdateCategoryComponent {
     private dialogRef: MatDialogRef<UpdateCategoryComponent>,
     @Inject(MAT_DIALOG_DATA) public category: CategoryBadge
   ) {
-    this.updateCategoryForm.id = category.id;
-    this.updateCategoryForm.name = category.name;
-    this.updateCategoryForm.status = category.status?.valueOf()
+    this.updateForm.id = category.id;
+    this.updateForm.name = category.name;
+    this.updateForm.status = category.status?.valueOf()
   }
 
-  getCategoryStatuses() {
+  getStatusArray() {
     return this.categoryService.getCategoryStatuses()
   }
 
-  updateCategory() {
-    this.categoryService.update(this.updateCategoryForm, this.updateCategoryForm.id!)
+  updateEvent() {
+    this.categoryService.update(this.updateForm, this.updateForm.id!)
       .subscribe(response => {
         if (response.ok) {
-          this.loadCategoriesAction();
+          this.loadDataAction();
         }
       })
   }
 
-  private loadCategoriesAction() {
+  private loadDataAction() {
     this.stateActionRegistry.executeAction(CATEGORY_KEY);
   }
 }

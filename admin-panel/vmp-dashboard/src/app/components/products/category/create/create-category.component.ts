@@ -36,7 +36,8 @@ import {
 })
 export class CreateCategoryComponent {
 
-  addCategoryForm: CategoryForm = new CategoryForm();
+  createForm: CategoryForm = new CategoryForm();
+
 
   @ViewChild("categoryForm")
   CategoryForm!: NgForm;
@@ -48,15 +49,15 @@ export class CreateCategoryComponent {
   ) {
   }
 
-  getCategoryStatuses() {
+  getStatusArray() {
     return this.categoryService.getCategoryStatuses()
   }
 
-  createCategory() {
-    this.categoryService.create(this.toEntity(this.addCategoryForm))
+  create() {
+    this.categoryService.create(this.toEntity(this.createForm))
       .subscribe(response => {
         if (response.status == 201) {
-          this.loadCategoriesAction();
+          this.loadDataAction();
         }
       })
   }
@@ -68,7 +69,7 @@ export class CreateCategoryComponent {
     };
   }
 
-  private loadCategoriesAction() {
+  private loadDataAction() {
     this.stateActionRegistry.executeAction(CATEGORY_KEY);
   }
 }

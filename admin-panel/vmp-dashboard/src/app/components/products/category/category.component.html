@@ -44,7 +44,7 @@
       </div>
 
       <div class="mx-1">
-        <custom-primary-button [nzGap]="'small'" [nzAlign]="'center'" [nzSize]="'large'" (click)="openCloseFilterModal()">
+        <custom-primary-button [nzGap]="'small'" [nzAlign]="'center'" [nzSize]="'large'" (click)="openCloseFilterModalEvent()">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -55,7 +55,7 @@
       </div>
 
       <div class="mx-1">
-        <custom-primary-button [nzGap]="'small'" [nzAlign]="'center'" [nzSize]="'large'" (click)="addCategory()">
+        <custom-primary-button [nzGap]="'small'" [nzAlign]="'center'" [nzSize]="'large'" (click)="createEvent()">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -73,27 +73,27 @@
           <div nz-col [nzSpan]="5">
             <nz-form-label>Id</nz-form-label>
             <nz-form-control>
-              <input [(ngModel)]="filterCategoryForm.id" [ngModelOptions]="{standalone: true}" nz-input nzSize="large"/>
+              <input [(ngModel)]="filterForm.id" [ngModelOptions]="{standalone: true}" nz-input nzSize="large"/>
             </nz-form-control>
           </div>
           <div nz-col [nzSpan]="5">
             <nz-form-label>Name</nz-form-label>
             <nz-form-control>
-              <input [(ngModel)]="filterCategoryForm.name" [ngModelOptions]="{standalone: true}" nz-input nzSize="large"/>
+              <input [(ngModel)]="filterForm.name" [ngModelOptions]="{standalone: true}" nz-input nzSize="large"/>
             </nz-form-control>
           </div>
           <div nz-col [nzSpan]="5">
             <nz-form-label>Status</nz-form-label>
             <nz-form-control nzValidateStatus="validating">
-              <nz-select nzAllowClear [(ngModel)]="filterCategoryForm.status" [ngModelOptions]="{standalone: true}" nzSize="large">
-                <nz-option *ngFor="let status of getCategoryStatus()" nzValue="{{ status.status }}" nzLabel="{{ status.status }}"/>
+              <nz-select nzAllowClear [(ngModel)]="filterForm.status" [ngModelOptions]="{standalone: true}" nzSize="large">
+                <nz-option *ngFor="let status of getStatusArray()" nzValue="{{ status.status }}" nzLabel="{{ status.status }}"/>
               </nz-select>
             </nz-form-control>
           </div>
           <div nz-col class="flex ant-flex-align-flex-end">
             <nz-space [nzSize]="8">
-              <custom-primary-button *nzSpaceItem [nzSize]="'large'" (click)="applyFilter()">Search</custom-primary-button>
-              <button *nzSpaceItem nz-button nzSize="large" (click)="resetFilter()">Clear</button>
+              <custom-primary-button *nzSpaceItem [nzSize]="'large'" (click)="applyFilterEvent()">Search</custom-primary-button>
+              <button *nzSpaceItem nz-button nzSize="large" (click)="resetFilterEvent()">Clear</button>
             </nz-space>
           </div>
         </div>
@@ -112,7 +112,7 @@
       <tr>
         <th nzColumnKey="id" [nzSortFn]="true">Id</th>
         <th nzColumnKey="name" [nzSortFn]="true">Name</th>
-        <th nzColumnKey="status" [nzFilters]="filterStatus" [nzFilterFn]="true">Status</th>
+        <th nzColumnKey="status" [nzSortFn]="true">Status</th>
         <th></th>
       </tr>
       </thead>
@@ -133,14 +133,14 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
               </svg>
             </button>
-            <button (click)="updateCategory(data)" nz-button nzType="default" [nzSize]="'small'">
+            <button (click)="updateEvent(data)" nz-button nzType="default" [nzSize]="'small'">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                    stroke="currentColor" class="size-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
               </svg>
             </button>
-            <button (click)="deleteCategory(data)" nz-button nzType="default" [nzSize]="'small'">
+            <button (click)="deleteEvent(data)" nz-button nzType="default" [nzSize]="'small'">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                    stroke="currentColor" class="size-4">
                 <path stroke-linecap="round" stroke-linejoin="round"

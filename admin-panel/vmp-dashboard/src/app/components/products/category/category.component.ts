@@ -15,7 +15,6 @@ import {StateActionRegistry} from "../../../services/state.action.registry";
 import {StateActionNode} from "../../../models/state.action.node";
 import {CATEGORY_KEY} from "../../../core/global.constants";
 import {CategoryStatusComponent} from "./status/category.status.component";
-import {CategoryFilterComponent} from "./filter/category.filter.component";
 import {FilterModel} from "../../../models/filter/filter.model";
 import {NzButtonComponent, NzButtonGroupComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
@@ -44,26 +43,23 @@ import {FieldType} from "../../../models/filter/field.type";
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [CommonModule, NzTableModule, NavbarComponent, SidebarComponent, FormsModule, UpdateCategoryComponent, MatButton, CategoryStatusComponent, CategoryFilterComponent, NzButtonComponent, NzIconDirective, NzFlexDirective, NzInputGroupComponent, NzInputDirective, NzThAddOnComponent, NzCellBreakWordDirective, NzTableComponent, NzPaginationComponent, NzCollapseComponent, NzCollapsePanelComponent, ReactiveFormsModule, NzFormDirective, NzFormItemComponent, NzColDirective, NzRowDirective, NzFormLabelComponent, NzSelectComponent, NzOptionComponent, NzFormControlComponent, NzSpaceComponent, NzSpaceItemDirective, NzRadioGroupComponent, NzRadioComponent, NzButtonGroupComponent, CustomPrimaryButtonComponent],
+  imports: [CommonModule, NzTableModule, NavbarComponent, SidebarComponent, FormsModule, UpdateCategoryComponent, MatButton, CategoryStatusComponent, NzButtonComponent, NzIconDirective, NzFlexDirective, NzInputGroupComponent, NzInputDirective, NzThAddOnComponent, NzCellBreakWordDirective, NzTableComponent, NzPaginationComponent, NzCollapseComponent, NzCollapsePanelComponent, ReactiveFormsModule, NzFormDirective, NzFormItemComponent, NzColDirective, NzRowDirective, NzFormLabelComponent, NzSelectComponent, NzOptionComponent, NzFormControlComponent, NzSpaceComponent, NzSpaceItemDirective, NzRadioGroupComponent, NzRadioComponent, NzButtonGroupComponent, CustomPrimaryButtonComponent],
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })
 export class CategoryComponent implements OnInit, StateAction {
 
-  filterCategoryForm: CategoryForm = new CategoryForm();
+  filterForm: CategoryForm = new CategoryForm();
 
   @ViewChild("categoryForm")
   CategoryForm!: NgForm;
 
-  filterStatus = [
-    { text: 'ACTIVE', value: 'ACTIVE' },
-    { text: 'BLOCKED', value: 'BLOCKED' }
-  ]
-
   isActiveFilterPanel = true;
   loading = false;
+
   categories: CategoryBadge[] = [];
   filterModels: FilterModel[] = [];
+
   sort: string = "id,desc";
   pageSize: number = 10
   totalPageSize: number = 0
@@ -76,16 +72,28 @@ export class CategoryComponent implements OnInit, StateAction {
   ) {
   }
 
-  getCategoryStatus() {
+  // Main Methods
+
+  /**
+   *
+   */
+  public getStatusArray() {
     return this.categoryService.getCategoryStatuses();
   }
 
-  changeProperties(property: any): void {
+  /**
+   *
+   * @param property
+   */
+  public changeProperties(property: any): void {
     this.filterModels = property;
     this.loadCategories();
   }
 
-  action(): void {
+  /**
+   *
+   */
+  public action(): void {
     this.loadCategories();
   }
 
@@ -93,7 +101,7 @@ export class CategoryComponent implements OnInit, StateAction {
    *
    * @param pageNumber
    */
-  changePageIndex(pageNumber: number) {
+  public changePageIndex(pageNumber: number) {
     this.setPageNumber(pageNumber);
     this.loadCategories();
   }
@@ -102,41 +110,43 @@ export class CategoryComponent implements OnInit, StateAction {
    *
    * @param params
    */
-  onQueryParamsChange(params: NzTableQueryParams) {
+  public onQueryParamsChange(params: NzTableQueryParams) {
     console.log(params);
   }
 
   /** Set page number */
-  setPageNumber(pageNumber: number) {
+  public setPageNumber(pageNumber: number) {
     this.currentPage = pageNumber;
   }
 
   /**
    *
    */
-  getPageCount() {
+  public getPageCount() {
     return Math.ceil(this.totalPageSize / this.pageSize);
   }
 
-  openCloseFilterModal() {
+  // Events
+
+  openCloseFilterModalEvent() {
     this.isActiveFilterPanel = !this.isActiveFilterPanel;
   }
 
-  applyFilter() {
-    this.filterModels = this.createFilterModels(this.filterCategoryForm);
+  applyFilterEvent() {
+    this.filterModels = this.createFilterModels(this.filterForm);
     this.loadCategories();
   }
 
-  resetFilter() {
-    this.filterCategoryForm.name = "";
-    this.filterCategoryForm.id = undefined;
-    this.filterCategoryForm.status = undefined;
+  resetFilterEvent() {
+    this.filterForm.name = "";
+    this.filterForm.id = undefined;
+    this.filterForm.status = undefined;
 
     this.filterModels = [];
     this.loadCategories();
   }
 
-  addCategory() {
+  createEvent() {
     this.dialog.open(CreateCategoryComponent, {
       height: '450px',
       width: '1000px',
@@ -145,7 +155,7 @@ export class CategoryComponent implements OnInit, StateAction {
     })
   }
 
-  updateCategory(category: CategoryBadge) {
+  updateEvent(category: CategoryBadge) {
     this.dialog.open(UpdateCategoryComponent, {
       data: {
         id: category.id,
@@ -159,7 +169,7 @@ export class CategoryComponent implements OnInit, StateAction {
     })
   }
 
-  deleteCategory(category: CategoryBadge) {
+  deleteEvent(category: CategoryBadge) {
     this.dialog.open(DeleteCategoryComponent, {
       data: {
         id: category.id,
@@ -171,6 +181,13 @@ export class CategoryComponent implements OnInit, StateAction {
       position: {right: '20%', left: '22%', top: '2%'},
       panelClass: 'rounded-lg'
     })
+  }
+
+  // Private Methods
+
+  ngOnInit(): void {
+    this.loadCategories();
+    this.stateActionRegistry.add(new StateActionNode(CATEGORY_KEY, this));
   }
 
   private createFilterModels(filterCategoryForm: CategoryForm): FilterModel[] {
@@ -188,11 +205,6 @@ export class CategoryComponent implements OnInit, StateAction {
       filterModels.push(new FilterModel('status.equals', FieldType.TEXT, filterCategoryForm.status));
     }
     return filterModels;
-  }
-
-  ngOnInit(): void {
-    this.loadCategories();
-    this.stateActionRegistry.add(new StateActionNode(CATEGORY_KEY, this));
   }
 
   private loadCategories() {

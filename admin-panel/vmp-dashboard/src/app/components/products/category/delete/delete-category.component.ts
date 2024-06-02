@@ -39,7 +39,7 @@ export class DeleteCategoryComponent {
   ) {
   }
 
-  deleteCategory() {
+  deleteEvent() {
     this.categoryService.delete(this.category.id!)
       .subscribe(response => {
         if (response.status === 204) {

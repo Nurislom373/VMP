@@ -11,15 +11,15 @@
       <div class="col-span-full">
         <nz-form-label>Name</nz-form-label>
         <nz-form-control>
-          <input nz-input nzSize="large" [(ngModel)]="updateCategoryForm.name"/>
+          <input nz-input nzSize="large" [(ngModel)]="updateForm.name"/>
         </nz-form-control>
       </div>
 
       <div class="col-span-full">
         <nz-form-label>Status</nz-form-label>
         <nz-form-control nzValidateStatus="validating">
-          <nz-select nzAllowClear nzSize="large" name="select-validate" [(ngModel)]="updateCategoryForm.status">
-            <nz-option *ngFor="let status of getCategoryStatuses()" nzValue="{{ status.status }}" nzLabel="{{ status.status }}"/>
+          <nz-select nzAllowClear nzSize="large" name="select-validate" [(ngModel)]="updateForm.status">
+            <nz-option *ngFor="let status of getStatusArray()" nzValue="{{ status.status }}" nzLabel="{{ status.status }}"/>
           </nz-select>
         </nz-form-control>
       </div>
@@ -31,6 +31,6 @@
   </div>
 
   <div class="col-end-4 mt-10">
-    <custom-primary-button mat-dialog-close (click)="updateCategory()">Update</custom-primary-button>
+    <custom-primary-button mat-dialog-close (click)="updateEvent()">Update</custom-primary-button>
   </div>
 </div>
