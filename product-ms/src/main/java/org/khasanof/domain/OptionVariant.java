@@ -26,6 +26,10 @@ public class OptionVariant implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
+    @Column(name = "stock", nullable = false)
+    private Long stock;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private OptionVariantStatus status;
@@ -64,6 +68,19 @@ public class OptionVariant implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getStock() {
+        return this.stock;
+    }
+
+    public OptionVariant stock(Long stock) {
+        this.setStock(stock);
+        return this;
+    }
+
+    public void setStock(Long stock) {
+        this.stock = stock;
     }
 
     public OptionVariantStatus getStatus() {
@@ -130,6 +147,7 @@ public class OptionVariant implements Serializable {
         return "OptionVariant{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", stock=" + getStock() +
             ", status='" + getStatus() + "'" +
             "}";
     }

@@ -44,6 +44,8 @@ public class OptionVariantCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
+    private LongFilter stock;
+
     private OptionVariantStatusFilter status;
 
     private LongFilter priceId;
@@ -57,6 +59,7 @@ public class OptionVariantCriteria implements Serializable, Criteria {
     public OptionVariantCriteria(OptionVariantCriteria other) {
         this.id = other.optionalId().map(LongFilter::copy).orElse(null);
         this.name = other.optionalName().map(StringFilter::copy).orElse(null);
+        this.stock = other.optionalStock().map(LongFilter::copy).orElse(null);
         this.status = other.optionalStatus().map(OptionVariantStatusFilter::copy).orElse(null);
         this.priceId = other.optionalPriceId().map(LongFilter::copy).orElse(null);
         this.optionId = other.optionalOptionId().map(LongFilter::copy).orElse(null);
@@ -104,6 +107,25 @@ public class OptionVariantCriteria implements Serializable, Criteria {
 
     public void setName(StringFilter name) {
         this.name = name;
+    }
+
+    public LongFilter getStock() {
+        return stock;
+    }
+
+    public Optional<LongFilter> optionalStock() {
+        return Optional.ofNullable(stock);
+    }
+
+    public LongFilter stock() {
+        if (stock == null) {
+            setStock(new LongFilter());
+        }
+        return stock;
+    }
+
+    public void setStock(LongFilter stock) {
+        this.stock = stock;
     }
 
     public OptionVariantStatusFilter getStatus() {
@@ -194,6 +216,7 @@ public class OptionVariantCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
+            Objects.equals(stock, that.stock) &&
             Objects.equals(status, that.status) &&
             Objects.equals(priceId, that.priceId) &&
             Objects.equals(optionId, that.optionId) &&
@@ -203,7 +226,7 @@ public class OptionVariantCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, status, priceId, optionId, distinct);
+        return Objects.hash(id, name, stock, status, priceId, optionId, distinct);
     }
 
     // prettier-ignore
@@ -212,6 +235,7 @@ public class OptionVariantCriteria implements Serializable, Criteria {
         return "OptionVariantCriteria{" +
             optionalId().map(f -> "id=" + f + ", ").orElse("") +
             optionalName().map(f -> "name=" + f + ", ").orElse("") +
+            optionalStock().map(f -> "stock=" + f + ", ").orElse("") +
             optionalStatus().map(f -> "status=" + f + ", ").orElse("") +
             optionalPriceId().map(f -> "priceId=" + f + ", ").orElse("") +
             optionalOptionId().map(f -> "optionId=" + f + ", ").orElse("") +

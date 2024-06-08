@@ -48,6 +48,7 @@ public class OptionVariantAsserts {
         assertThat(expected)
             .as("Verify OptionVariant relevant properties")
             .satisfies(e -> assertThat(e.getName()).as("check name").isEqualTo(actual.getName()))
+            .satisfies(e -> assertThat(e.getStock()).as("check stock").isEqualTo(actual.getStock()))
             .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()));
     }
 

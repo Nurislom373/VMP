@@ -76,6 +76,7 @@ class OptionVariantCriteriaTest {
     private static void setAllFilters(OptionVariantCriteria optionVariantCriteria) {
         optionVariantCriteria.id();
         optionVariantCriteria.name();
+        optionVariantCriteria.stock();
         optionVariantCriteria.status();
         optionVariantCriteria.priceId();
         optionVariantCriteria.optionId();
@@ -87,6 +88,7 @@ class OptionVariantCriteriaTest {
             criteria ->
                 condition.apply(criteria.getId()) &&
                 condition.apply(criteria.getName()) &&
+                condition.apply(criteria.getStock()) &&
                 condition.apply(criteria.getStatus()) &&
                 condition.apply(criteria.getPriceId()) &&
                 condition.apply(criteria.getOptionId()) &&
@@ -103,6 +105,7 @@ class OptionVariantCriteriaTest {
             criteria ->
                 condition.apply(criteria.getId(), copy.getId()) &&
                 condition.apply(criteria.getName(), copy.getName()) &&
+                condition.apply(criteria.getStock(), copy.getStock()) &&
                 condition.apply(criteria.getStatus(), copy.getStatus()) &&
                 condition.apply(criteria.getPriceId(), copy.getPriceId()) &&
                 condition.apply(criteria.getOptionId(), copy.getOptionId()) &&

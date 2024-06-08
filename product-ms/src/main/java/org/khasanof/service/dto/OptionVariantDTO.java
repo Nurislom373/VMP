@@ -16,6 +16,9 @@ public class OptionVariantDTO implements Serializable {
     @NotNull
     private String name;
 
+    @NotNull
+    private Long stock;
+
     private OptionVariantStatus status;
 
     private PriceDTO price;
@@ -36,6 +39,14 @@ public class OptionVariantDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getStock() {
+        return stock;
+    }
+
+    public void setStock(Long stock) {
+        this.stock = stock;
     }
 
     public OptionVariantStatus getStatus() {
@@ -89,6 +100,7 @@ public class OptionVariantDTO implements Serializable {
         return "OptionVariantDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", stock=" + getStock() +
             ", status='" + getStatus() + "'" +
             ", price=" + getPrice() +
             ", option=" + getOption() +

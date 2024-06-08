@@ -13,6 +13,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "stock",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "status",
       "fieldType": "OptionVariantStatus",
       "fieldValues": "ACTIVE,DELETED"

@@ -40,6 +40,10 @@ class OptionVariantResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final Long DEFAULT_STOCK = 1L;
+    private static final Long UPDATED_STOCK = 2L;
+    private static final Long SMALLER_STOCK = 1L - 1L;
+
     private static final OptionVariantStatus DEFAULT_STATUS = OptionVariantStatus.ACTIVE;
     private static final OptionVariantStatus UPDATED_STATUS = OptionVariantStatus.DELETED;
 
@@ -73,7 +77,7 @@ class OptionVariantResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static OptionVariant createEntity(EntityManager em) {
-        OptionVariant optionVariant = new OptionVariant().name(DEFAULT_NAME).status(DEFAULT_STATUS);
+        OptionVariant optionVariant = new OptionVariant().name(DEFAULT_NAME).stock(DEFAULT_STOCK).status(DEFAULT_STATUS);
         return optionVariant;
     }
 
@@ -84,7 +88,7 @@ class OptionVariantResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static OptionVariant createUpdatedEntity(EntityManager em) {
-        OptionVariant optionVariant = new OptionVariant().name(UPDATED_NAME).status(UPDATED_STATUS);
+        OptionVariant optionVariant = new OptionVariant().name(UPDATED_NAME).stock(UPDATED_STOCK).status(UPDATED_STATUS);
         return optionVariant;
     }
 
@@ -161,6 +165,25 @@ class OptionVariantResourceIT {
 
     @Test
     @Transactional
+    void checkStockIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        optionVariant.setStock(null);
+
+        // Create the OptionVariant, which fails.
+        OptionVariantDTO optionVariantDTO = optionVariantMapper.toDto(optionVariant);
+
+        restOptionVariantMockMvc
+            .perform(
+                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(optionVariantDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllOptionVariants() throws Exception {
         // Initialize the database
         optionVariantRepository.saveAndFlush(optionVariant);
@@ -172,6 +195,7 @@ class OptionVariantResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(optionVariant.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].stock").value(hasItem(DEFAULT_STOCK.intValue())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
 
@@ -188,6 +212,7 @@ class OptionVariantResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(optionVariant.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.stock").value(DEFAULT_STOCK.intValue()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
 
@@ -254,6 +279,76 @@ class OptionVariantResourceIT {
 
         // Get all the optionVariantList where name does not contain
         defaultOptionVariantFiltering("name.doesNotContain=" + UPDATED_NAME, "name.doesNotContain=" + DEFAULT_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllOptionVariantsByStockIsEqualToSomething() throws Exception {
+        // Initialize the database
+        optionVariantRepository.saveAndFlush(optionVariant);
+
+        // Get all the optionVariantList where stock equals to
+        defaultOptionVariantFiltering("stock.equals=" + DEFAULT_STOCK, "stock.equals=" + UPDATED_STOCK);
+    }
+
+    @Test
+    @Transactional
+    void getAllOptionVariantsByStockIsInShouldWork() throws Exception {
+        // Initialize the database
+        optionVariantRepository.saveAndFlush(optionVariant);
+
+        // Get all the optionVariantList where stock in
+        defaultOptionVariantFiltering("stock.in=" + DEFAULT_STOCK + "," + UPDATED_STOCK, "stock.in=" + UPDATED_STOCK);
+    }
+
+    @Test
+    @Transactional
+    void getAllOptionVariantsByStockIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        optionVariantRepository.saveAndFlush(optionVariant);
+
+        // Get all the optionVariantList where stock is not null
+        defaultOptionVariantFiltering("stock.specified=true", "stock.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllOptionVariantsByStockIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        optionVariantRepository.saveAndFlush(optionVariant);
+
+        // Get all the optionVariantList where stock is greater than or equal to
+        defaultOptionVariantFiltering("stock.greaterThanOrEqual=" + DEFAULT_STOCK, "stock.greaterThanOrEqual=" + UPDATED_STOCK);
+    }
+
+    @Test
+    @Transactional
+    void getAllOptionVariantsByStockIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        optionVariantRepository.saveAndFlush(optionVariant);
+
+        // Get all the optionVariantList where stock is less than or equal to
+        defaultOptionVariantFiltering("stock.lessThanOrEqual=" + DEFAULT_STOCK, "stock.lessThanOrEqual=" + SMALLER_STOCK);
+    }
+
+    @Test
+    @Transactional
+    void getAllOptionVariantsByStockIsLessThanSomething() throws Exception {
+        // Initialize the database
+        optionVariantRepository.saveAndFlush(optionVariant);
+
+        // Get all the optionVariantList where stock is less than
+        defaultOptionVariantFiltering("stock.lessThan=" + UPDATED_STOCK, "stock.lessThan=" + DEFAULT_STOCK);
+    }
+
+    @Test
+    @Transactional
+    void getAllOptionVariantsByStockIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        optionVariantRepository.saveAndFlush(optionVariant);
+
+        // Get all the optionVariantList where stock is greater than
+        defaultOptionVariantFiltering("stock.greaterThan=" + SMALLER_STOCK, "stock.greaterThan=" + DEFAULT_STOCK);
     }
 
     @Test
@@ -345,6 +440,7 @@ class OptionVariantResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(optionVariant.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].stock").value(hasItem(DEFAULT_STOCK.intValue())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
 
         // Check, that the count call also returns 1
@@ -393,7 +489,7 @@ class OptionVariantResourceIT {
         OptionVariant updatedOptionVariant = optionVariantRepository.findById(optionVariant.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedOptionVariant are not directly saved in db
         em.detach(updatedOptionVariant);
-        updatedOptionVariant.name(UPDATED_NAME).status(UPDATED_STATUS);
+        updatedOptionVariant.name(UPDATED_NAME).stock(UPDATED_STOCK).status(UPDATED_STATUS);
         OptionVariantDTO optionVariantDTO = optionVariantMapper.toDto(updatedOptionVariant);
 
         restOptionVariantMockMvc
@@ -488,7 +584,7 @@ class OptionVariantResourceIT {
         OptionVariant partialUpdatedOptionVariant = new OptionVariant();
         partialUpdatedOptionVariant.setId(optionVariant.getId());
 
-        partialUpdatedOptionVariant.status(UPDATED_STATUS);
+        partialUpdatedOptionVariant.name(UPDATED_NAME).stock(UPDATED_STOCK);
 
         restOptionVariantMockMvc
             .perform(
@@ -520,7 +616,7 @@ class OptionVariantResourceIT {
         OptionVariant partialUpdatedOptionVariant = new OptionVariant();
         partialUpdatedOptionVariant.setId(optionVariant.getId());
 
-        partialUpdatedOptionVariant.name(UPDATED_NAME).status(UPDATED_STATUS);
+        partialUpdatedOptionVariant.name(UPDATED_NAME).stock(UPDATED_STOCK).status(UPDATED_STATUS);
 
         restOptionVariantMockMvc
             .perform(

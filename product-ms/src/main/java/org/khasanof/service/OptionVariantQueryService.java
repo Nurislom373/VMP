@@ -80,6 +80,9 @@ public class OptionVariantQueryService extends QueryService<OptionVariant> {
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), OptionVariant_.name));
             }
+            if (criteria.getStock() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getStock(), OptionVariant_.stock));
+            }
             if (criteria.getStatus() != null) {
                 specification = specification.and(buildSpecification(criteria.getStatus(), OptionVariant_.status));
             }
